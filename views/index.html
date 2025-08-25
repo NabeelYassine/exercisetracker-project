@@ -1,46 +1,281 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Exercise Tracker | freeCodeCamp</title>
-    <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon.ico"  type="image/x-icon" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
-    <link href="style.css" rel="stylesheet" type="text/css" />
-  </head>
-
-  <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
     <div class="container">
-      <h1>Exercise tracker</h1>
-      <form action="/api/users" method="post">
-        <h2>Create a New User</h2>
-        <p><code>POST /api/users</code></p>
-        <input id="uname" type="text" name="username" placeholder="username" />
-        <input type="submit" value="Submit" />
-      </form>
-      <form action="/api/users/:_id/exercises" id="exercise-form" method="post">
-        <h2>Add exercises</h2>
-        <p><code>POST /api/users/:_id/exercises</code></p>
-        <input id="uid" type="text" name=":_id" placeholder=":_id" />
-        <input id="desc" type="text" name="description" placeholder="description*" />
-        <input id="dur" type="text" name="duration" placeholder="duration* (mins.)" />
-        <input id="date" type="text" name="date" placeholder="date (yyyy-mm-dd)" />
-        <input type="submit" value="Submit" />
-      </form>
-      <p>
-        <strong>GET user's exercise log: </strong>
-        <code>GET /api/users/:_id/logs?[from][&amp;to][&amp;limit]</code>
-      </p>
-      <p><strong>[ ]</strong> = optional</p>
-      <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
+        <header>
+            <h1>Exercise Tracker</h1>
+            <p class="subtitle">Track your exercises and monitor your fitness progress</p>
+        </header>
+        
+        <div class="content">
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> About This Service</h2>
+                <p>This Exercise Tracker allows you to create users, add exercises, and view exercise logs. It's a solution for the FreeCodeCamp Back End Development and APIs certification project.</p>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-dumbbell"></i> Exercise Tracker</h2>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="create-user">Create User</div>
+                    <div class="tab" data-tab="add-exercise">Add Exercise</div>
+                    <div class="tab" data-tab="view-log">View Exercise Log</div>
+                </div>
+                
+                <div class="tab-content active" id="create-user">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter username">
+                    </div>
+                    <button id="createUserBtn">Create User</button>
+                </div>
+                
+                <div class="tab-content" id="add-exercise">
+                    <div class="form-group">
+                        <label for="userId">User ID</label>
+                        <input type="text" id="userId" placeholder="Enter user ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" placeholder="Enter exercise description">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Duration (minutes)</label>
+                        <input type="number" id="duration" placeholder="Enter duration">
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date (optional)</label>
+                        <input type="date" id="date">
+                    </div>
+                    <button id="addExerciseBtn">Add Exercise</button>
+                </div>
+                
+                <div class="tab-content" id="view-log">
+                    <div class="form-group">
+                        <label for="logUserId">User ID</label>
+                        <input type="text" id="logUserId" placeholder="Enter user ID">
+                    </div>
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label for="fromDate">From Date (optional)</label>
+                            <input type="date" id="fromDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="toDate">To Date (optional)</label>
+                            <input type="date" id="toDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="limit">Limit (optional)</label>
+                        <input type="number" id="limit" placeholder="Enter limit">
+                    </div>
+                    <button id="viewLogBtn">View Exercise Log</button>
+                </div>
+                
+                <div class="output" id="output">
+// Results will appear here...
+// Example user creation response:
+// {
+//   "username": "fcc_test",
+//   "_id": "5fb5853f734231456ccb3b05"
+// }
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-road"></i> API Usage</h2>
+                <p>Use these endpoints to manage users and exercises:</p>
+                
+                <div class="examples">
+                    <div class="example">
+                        <h3><i class="fas fa-user-plus"></i> Create User</h3>
+                        <div class="endpoint">POST /api/users</div>
+                        <p>Create a new user by sending form data with username.</p>
+                        <div class="example-response">{
+  "username": "fcc_test",
+  "_id": "5fb5853f734231456ccb3b05"
+}</div>
+                    </div>
+                    
+                    <div class="example">
+                        <h3><i class="fas fa-running"></i> Add Exercise</h3>
+                        <div class="endpoint">POST /api/users/:_id/exercises</div>
+                        <p>Add an exercise for a user with description, duration, and optional date.</p>
+                        <div class="example-response">{
+  "username": "fcc_test",
+  "description": "test",
+  "duration": 60,
+  "date": "Mon Jan 01 1990",
+  "_id": "5fb5853f734231456ccb3b05"
+}</div>
+                    </div>
+                    
+                    <div class="example">
+                        <h3><i class="fas fa-list"></i> Get Exercise Log</h3>
+                        <div class="endpoint">GET /api/users/:_id/logs</div>
+                        <p>Retrieve a user's exercise log with optional from, to, and limit parameters.</p>
+                        <div class="example-response">{
+  "username": "fcc_test",
+  "count": 1,
+  "_id": "5fb5853f734231456ccb3b05",
+  "log": [
+    {
+      "description": "test",
+      "duration": 60,
+      "date": "Mon Jan 01 1990"
+    }
+  ]
+}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025, Nabeel Yassine. All Rights Reserved.</p>
+            <p>Developed as part of the FreeCodeCamp Back End Development and APIs Certification</p>
+        </footer>
     </div>
+
     <script>
-      const exerciseForm = document.getElementById("exercise-form");
-
-      exerciseForm.addEventListener("submit", () => {
-        const userId = document.getElementById("uid").value;
-        exerciseForm.action = `/api/users/${userId}/exercises`;
-
-        exerciseForm.submit();
-      });
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const output = document.getElementById('output');
+            
+            // Tab switching functionality
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show active tab content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Create user functionality
+            document.getElementById('createUserBtn').addEventListener('click', async function() {
+                const username = document.getElementById('username').value.trim();
+                
+                if (!username) {
+                    output.innerHTML = `<span class="error">Please enter a username</span>`;
+                    return;
+                }
+                
+                try {
+                    output.textContent = "Creating user...";
+                    
+                    const response = await fetch('/api/users', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `username=${encodeURIComponent(username)}`
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        output.innerHTML = `<span class="error">Error: ${data.error}</span>`;
+                    } else {
+                        output.innerHTML = `<span class="success">User created successfully!</span>\n\n${JSON.stringify(data, null, 2)}`;
+                    }
+                } catch (error) {
+                    output.innerHTML = `<span class="error">Network Error: Could not connect to the API</span>`;
+                }
+            });
+            
+            // Add exercise functionality
+            document.getElementById('addExerciseBtn').addEventListener('click', async function() {
+                const userId = document.getElementById('userId').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const duration = document.getElementById('duration').value.trim();
+                const date = document.getElementById('date').value;
+                
+                if (!userId || !description || !duration) {
+                    output.innerHTML = `<span class="error">Please fill in all required fields</span>`;
+                    return;
+                }
+                
+                try {
+                    output.textContent = "Adding exercise...";
+                    
+                    let body = `description=${encodeURIComponent(description)}&duration=${encodeURIComponent(duration)}`;
+                    if (date) {
+                        body += `&date=${encodeURIComponent(date)}`;
+                    }
+                    
+                    const response = await fetch(`/api/users/${userId}/exercises`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: body
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        output.innerHTML = `<span class="error">Error: ${data.error}</span>`;
+                    } else {
+                        output.innerHTML = `<span class="success">Exercise added successfully!</span>\n\n${JSON.stringify(data, null, 2)}`;
+                    }
+                } catch (error) {
+                    output.innerHTML = `<span class="error">Network Error: Could not connect to the API</span>`;
+                }
+            });
+            
+            // View exercise log functionality
+            document.getElementById('viewLogBtn').addEventListener('click', async function() {
+                const userId = document.getElementById('logUserId').value.trim();
+                const fromDate = document.getElementById('fromDate').value;
+                const toDate = document.getElementById('toDate').value;
+                const limit = document.getElementById('limit').value;
+                
+                if (!userId) {
+                    output.innerHTML = `<span class="error">Please enter a user ID</span>`;
+                    return;
+                }
+                
+                try {
+                    output.textContent = "Fetching exercise log...";
+                    
+                    let url = `/api/users/${userId}/logs`;
+                    const params = [];
+                    
+                    if (fromDate) params.push(`from=${encodeURIComponent(fromDate)}`);
+                    if (toDate) params.push(`to=${encodeURIComponent(toDate)}`);
+                    if (limit) params.push(`limit=${encodeURIComponent(limit)}`);
+                    
+                    if (params.length > 0) {
+                        url += `?${params.join('&')}`;
+                    }
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        output.innerHTML = `<span class="error">Error: ${data.error}</span>`;
+                    } else {
+                        output.innerHTML = `<span class="success">Exercise log retrieved successfully!</span>\n\n${JSON.stringify(data, null, 2)}`;
+                    }
+                } catch (error) {
+                    output.innerHTML = `<span class="error">Network Error: Could not connect to the API</span>`;
+                }
+            });
+        });
     </script>
-  </body>
+</body>
 </html>
